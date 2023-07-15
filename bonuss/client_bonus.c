@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.c                                           :+:      :+:    :+:   */
+/*   client_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abenlahb <abenlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/14 15:57:38 by abenlahb          #+#    #+#             */
-/*   Updated: 2023/02/18 10:28:29 by abenlahb         ###   ########.fr       */
+/*   Created: 2023/02/17 18:39:51 by abenlahb          #+#    #+#             */
+/*   Updated: 2023/02/18 10:55:08 by abenlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "headerfile.h"
+#include "../headerfile.h"
 
 int	ft_atoi(const char *str)
 {
@@ -39,6 +39,16 @@ int	ft_atoi(const char *str)
 		i++;
 	}
 	return ((int)result * signe);
+}
+
+void	signal_handler(int sig)
+{
+	if (sig == SIGUSR2)
+	{
+		ft_printf("Message received\n");
+		exit(0);
+	}
+	usleep(100);
 }
 
 void	choise_signal(int pid, int shift, unsigned char c)
@@ -94,6 +104,8 @@ int	main(int argc, char **argv)
 	}
 	if (argv[2][0] == '\0')
 		return (0);
+	signal(SIGUSR1, signal_handler);
+	signal(SIGUSR2, signal_handler);
 	select_char(pid, argv[2]);
 	return (0);
 }
